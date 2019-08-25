@@ -39,5 +39,5 @@ This repository contains the submission for TCS HumAIn 2019- fifth problem state
 
 5)After the model are trained, they are ready for predictions. Integrating a webpage with these prediction models using Flask framework can be useful as users can interact with the models through a responsive user-friendly website. Users can choose a file from their system, upload it to the Flask server and get the predictions back in a user friendly format.
 
-## Final Result- Drawing Tool
+## Final Result- After Applying above solution on images.
 ![](result.jpg)
