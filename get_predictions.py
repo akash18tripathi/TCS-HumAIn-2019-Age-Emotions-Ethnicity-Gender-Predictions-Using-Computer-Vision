@@ -7,6 +7,10 @@ import cv2 as cv
 import tensorflow as tf
 from keras.models import load_model
 from keras.preprocessing import image as img
+import cv2
+import matplotlib.pyplot as plt
+import shutil
+from gevent.pywsgi import WSGIServer
 
 
 
@@ -19,8 +23,8 @@ age_dict={
 }
 
 gender_dict = {
-    0:'M',
-    1:'F'
+    0:'Male',
+    1:'Female'
 }
 ethnicity_dict={
     0:'arab',
@@ -40,7 +44,7 @@ emotion_dict={
 
 
 app = Flask(__name__)
-
+app.debug=True
 global name
 @app.route('/')
 def hello():
@@ -60,23 +64,42 @@ def status():
 
 @app.route('/predict')
 def predict():
-    image = img.load_img('image.jpg',target_size=(70,70))
+    
+    image = img.load_img('image.jpg')
+    image = np.array(image,dtype='uint8')
+    gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray,1.5,5)
+    for (x,y,w,h) in faces:
+        roi_color = image[y:y+h,x:x+w]
+        cv2.rectangle(image,(x,y),(x+w,y+h),(0,255,0),2)
+        cv2.imwrite('image.jpg',image)
+        cv2.imwrite('face.jpg',roi_color)
+    #image = img.img_to_array(image)
+    image = img.load_img('face.jpg',target_size=(25,25))
+    plt.imshow(image)
     image = img.img_to_array(image)
     image = image/255
-    image = image.reshape(1,70,70,3)
+    image = image.reshape(1,25,25,3)
     #Predicting
     g_pred = gender_pred(image)
     e_pred = ethnicity_pred(image)
     a_pred = age_pred(image)
     emo_pred = emotions_pred(image)
+    image = img.load_img('image.jpg')
+    image = np.array(image,dtype='uint8')
+    #cv2.putText(image,"Age:"+str(a_pred)+", Gender:  "+str(g_pred)+",Emotion: "+str(emo_pred)+",Ethnicity: "+str(e_pred),(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.8,(0,255,0),1,cv2.LINE_AA)
+    cv2.imwrite('image.jpg',image)
+    shutil.copy('image.jpg','static/')
     pred_dict={
     "Gender" : g_pred,
     "Age" : a_pred,
     "Ethnicity" : e_pred,
-    "Emotions": emo_pred
+    "Emotions": emo_pred,
     }
 
     return render_template('predictions.html',posts = pred_dict)
+
+
 
 
 def gender_pred(image):
@@ -107,5 +130,8 @@ if __name__ == '__main__':
     gender_model = load_model('gender_model.h5')
     age_model = load_model('age_model.h5')
     emotions_model = load_model('emotions_model.h5')
+    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     graph = tf.get_default_graph()
-    app.run(host = '0.0.0.0',port=5005)
+    http_server = WSGIServer(('', 5005), app)
+    http_server.serve_forever()
+    
