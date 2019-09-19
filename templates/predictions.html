@@ -4,14 +4,80 @@
   <head>
     <meta charset="utf-8">
     <title>Website</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
 
+#gender {
+position: absolute;
+margin-bottom: 200px;
+}
+body{
+  background-color:aliceblue
+}
+#main-div{
+  width: 380px;
+  height:570px;
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: white;
+  position: relative;
+  top: 100px;
+  left: 550px
+}
+#image-div{
+  width: 150px;
+  height: 200px;
+  margin: 30px 100px ;
+  border: 2px solid grey;
+  border-radius: 5px;
+
+}
+#image{
+  width:140px;
+  height:190px;
+  padding: 5px;
+}
+#info{
+  margin-left: 50px;
+  font-size: 120%
+}
+#clg{
+  text-align: center;
+  font-size: 200%;
+  color: white;
+}
+
+</style>
   </head>
-  <body>
+  <body >
 
-    <h2>Your Gender is: {{posts.Gender}} </h2>
-    <h2>Your Age is around: {{posts.Age}} years</h2>
-    <h2>Your Ethnicity is: {{posts.Ethnicity}} </h2>
-    <h2>Your Mood is: {{posts.Emotions}} </h2>
+  <div class="div">
+
+    <div id="main-div">
+      <div id="head" style="background:rgb(38,38,99)">
+        <b><p id="clg">Identity Card Autofill</p></b>
+      </div>
+      <div id="image-div">
+        <img src="{{url_for('static', filename='image.jpg')}}" alt="image here" id="image">
+      </div>
+      <div id="info">
+        <p>Name: <span id="gender">  Mr. XYZ </span></p>
+        <p>Gender: <span id="gender"><b>{{posts.Gender}} </b></span></p>
+        <p>Age: <span id="Department"><b>{{posts.Age}}</b></span></p>
+        <p>Ethnicity: <span id="ethnicity"><b>{{posts.Ethnicity}}</b></span></p>
+        <p>Mood:<span id="ethnicity"><b>{{posts.Emotions}}</b></span></p>
+      </div>
+    </div>
+
+  </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
 
   </body>
 </html>
